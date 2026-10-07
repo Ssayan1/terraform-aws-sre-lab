@@ -66,6 +66,10 @@ The infrastructure was deployed in the AWS `ap-south-1` region.
                 │  └─────────────────┘  │
                 └───────────────────────┘
 
+```
+
+---
+
 ## Traffic Flow
 
 ```
