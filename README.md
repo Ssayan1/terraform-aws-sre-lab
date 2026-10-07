@@ -190,20 +190,24 @@ terraform-aws-sre-lab/
 ├── .terraform.lock.hcl
 └── README.md
 ```
+```
 main.tf
-
+```
 Contains the AWS provider, networking resources, EC2 instance, security group, and Terraform outputs.
 
+```
 variables.tf
-
+```
 Contains configurable Terraform variables.
 
+```
 .terraform.lock.hcl
-
+```
 Locks the Terraform provider version information.
 
+```
 .gitignore
-
+```
 Prevents Terraform state, local provider files, and environment-specific variables from being committed.
 
 ---
@@ -579,8 +583,6 @@ Terraform State
 Actual AWS Infrastructure
 ```
 and determine whether changes are required.
-
----
 
 Terraform Plan
 
