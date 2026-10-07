@@ -1,37 +1,74 @@
 # Terraform AWS SRE Lab
 
-A production-style AWS infrastructure project built with **Terraform** to demonstrate Infrastructure as Code (IaC), AWS networking, EC2 provisioning, security controls, and infrastructure verification.
+![Terraform](https://img.shields.io/badge/Terraform-IaC-7B42BC?logo=terraform)
+![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazonaws)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04-E95420?logo=ubuntu)
+![Nginx](https://img.shields.io/badge/Nginx-Web%20Server-009639?logo=nginx)
 
-## Architecture
+A hands-on **Infrastructure as Code (IaC)** project using **Terraform and AWS** to provision a complete public cloud environment from scratch.
+
+The project demonstrates AWS networking, EC2 provisioning, security controls, Terraform variables and outputs, SSH access, Nginx deployment, infrastructure verification, and Git/GitHub workflow.
+
+---
+
+## 📌 Project Overview
+
+This project provisions an AWS environment using Terraform:
+
+- Custom VPC
+- Public subnet
+- Internet Gateway
+- Public route table
+- Internet route
+- Route table association
+- Security Group
+- Ubuntu EC2 instance
+- Dynamic Ubuntu AMI lookup
+- Terraform variables
+- Terraform outputs
+- SSH access
+- Nginx web server
+
+The infrastructure was deployed in the AWS `ap-south-1` region.
+
+---
+
+# 🏗️ Architecture
 
 ```text
-                         Internet
+                         INTERNET
+                            │
                             │
                             ▼
-                    Internet Gateway
-                            │
-                            ▼
-                  ┌─────────────────┐
-                  │      VPC        │
-                  │   10.0.0.0/16   │
-                  │                 │
-                  │  Public Subnet  │
-                  │   10.0.1.0/24   │
-                  │       │         │
-                  │       ▼         │
-                  │      EC2        │
-                  │   Ubuntu 24.04  │
-                  │       │         │
-                  │       ▼         │
-                  │     Nginx       │
-                  └─────────────────┘
-
-Security Group
-├── SSH  : 22 → My Public IP
-└── HTTP : 80 → 0.0.0.0/0
+                  ┌──────────────────┐
+                  │ Internet Gateway │
+                  └────────┬─────────┘
+                           │
+                           │ 0.0.0.0/0
+                           ▼
+                ┌───────────────────────┐
+                │         VPC           │
+                │      10.0.0.0/16      │
+                │                       │
+                │  ┌─────────────────┐  │
+                │  │  Public Subnet  │  │
+                │  │   10.0.1.0/24   │  │
+                │  │                 │  │
+                │  │  ┌───────────┐  │  │
+                │  │  │    EC2    │  │  │
+                │  │  │  Ubuntu   │  │  │
+                │  │  │  10.0.1.11│  │  │
+                │  │  └─────┬─────┘  │  │
+                │  │        │         │  │
+                │  │        ▼         │  │
+                │  │      Nginx       │  │
+                │  │       :80        │  │
+                │  └─────────────────┘  │
+                └───────────────────────┘
 
 ## Traffic Flow
 
+```
 Internet
    │
    ▼
@@ -54,12 +91,15 @@ EC2
    │
    ▼
 Nginx :80
+```
 
 ---
 
 ## ☁️ AWS Resources
 
 Terraform creates and manages the following resources:
+
+```
 | Resource                | Purpose                                |
 | ----------------------- | -------------------------------------- |
 | VPC                     | Isolated AWS network                   |
@@ -71,21 +111,26 @@ Terraform creates and manages the following resources:
 | Security Group          | Controls inbound/outbound traffic      |
 | EC2                     | Cloud compute instance                 |
 | Ubuntu AMI              | Operating system image                 |
+```
 
 ---
 
 ## 🔐 Security Group
 
 The EC2 Security Group contains:
+
+```
 | Protocol | Port | Source                        | Purpose  |
 | -------- | ---: | ----------------------------- | -------- |
 | TCP      |   22 | Administrator public IP `/32` | SSH      |
 | TCP      |   80 | `0.0.0.0/0`                   | HTTP     |
 | All      |  All | `0.0.0.0/0`                   | Outbound |
+```
 
 SSH is restricted to the administrator's public IP instead of exposing port 22 to the entire Internet.
 
 Example:
+
 ```
 SSH
 TCP 22
