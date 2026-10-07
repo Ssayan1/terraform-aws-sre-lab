@@ -75,7 +75,7 @@ resource "aws_security_group" "web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["49.37.8.205/32"]
+    cidr_blocks = [var.admin_cidr]
   }
 
   ingress {
@@ -120,7 +120,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = var.ami_id
   instance_type = var.instance_type
 
   key_name                    = "sre-demo"
